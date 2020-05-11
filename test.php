@@ -1,8 +1,9 @@
 <?php
+require_once(__DIR__ . '/init.php');
 
 $httpMethod = $_SERVER['REQUEST_METHOD']; //POST, GET, DELETE,...
 $data = json_decode(file_get_contents('php://input'), true);
-require_once(__DIR__ . '/init.php');
+
 
 
 // Auth::login("susa29@mail.com", "hello");
