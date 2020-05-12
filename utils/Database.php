@@ -27,7 +27,7 @@ class Database
     public static function connect()
     {
         if (self::$conn === null) {
-            require(__DIR__ . '/config.php'); //require database login credentials from the config file
+            require(__DIR__ . '/../config.php'); //require database login credentials from the config file
 
             $dsn = "mysql:host={$db_config->host};port={$db_config->port};dbname={$db_config->database};charset=utf8mb4";
 

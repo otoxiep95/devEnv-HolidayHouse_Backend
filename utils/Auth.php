@@ -1,5 +1,7 @@
 <?php
 
+ini_set('session.cookie_httponly', 1); //use HttpOnly session cookies
+
 class Auth
 {
     private static $session_name = "user_sid";
@@ -55,5 +57,14 @@ class Auth
         self::init();
         //destry session
         session_destroy();
+    }
+
+    public static function getUserId()
+    {
+        if (!self::is_authenticated()) {
+            return false;
+        } else {
+            return $_SESSION[self::$session_name];
+        }
     }
 }

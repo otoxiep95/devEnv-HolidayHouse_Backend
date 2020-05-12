@@ -1,8 +1,12 @@
 <?php
 
+
+
 class ApiResponse
 {
-    public static function success($httpStatus = 200, $message = "Success", $data = [])
+    private static $debug = true;
+
+    public static function success($data = [], $message = "Success", $httpStatus = 200)
     {
         $response = (object) [
             "data" => $data,
@@ -19,18 +23,26 @@ class ApiResponse
         exit;
     }
 
-    public static function error($httpStatus = 500, $message = "Error", $data = [])
+    public static function error($data = [], $message = "Error", $httpStatus = 500)
     {
 
         $bt = debug_backtrace();
         $caller = array_shift($bt);
         $lineNumber = $caller['line'];
 
-        $response = (object) [
-            "data" => $data,
-            "message" => $message,
-            "line" => $lineNumber
-        ];
+        if (self::$debug) {
+            $response = (object) [
+                "data" => $data,
+                "message" => $message,
+                "line" => $lineNumber
+            ];
+        } else {
+            $response = (object) [
+                "data" => $data,
+                "message" => $message
+            ];
+        }
+
 
         $response = json_encode($response);
 
