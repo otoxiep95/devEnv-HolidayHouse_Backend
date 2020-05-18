@@ -33,7 +33,7 @@ class Auth
 
 
         self::init();
-        $_SESSION[self::$session_name] = $user['email'];
+        $_SESSION[self::$session_name] = $user['user_id'];
         ApiResponse::success(200, "User authenticated");
     }
 
