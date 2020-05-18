@@ -39,8 +39,8 @@ if ($httpMethod == 'POST') {
         }
         $api[$key] = sanitize($post[$key]); //sanitize values and store them inside the API
     }
-    if($api['password'] !== $api['confirm_password']){
-        ApiResponse::error([], "Passwords do not match", 404)
+    if ($api['password'] !== $api['confirm_password']) {
+        ApiResponse::error([], "Passwords do not match", 404);
     }
     //check if email already exists
     $conn = Database::connect();
@@ -51,7 +51,7 @@ if ($httpMethod == 'POST') {
     if ($query && $stmt->rowCount()) {
         return ApiResponse::error([], "Email already exists", 404); //dont know the code
     }
-    
+
     $passwordHash = password_hash($api['password'], PASSWORD_DEFAULT);
     $stmt = $conn->prepare("INSERT INTO user
     (first_name, last_name, email, password, phone)
