@@ -9,16 +9,16 @@ if ($httpMethod == "POST") {
         'email' => 'Email',
         'password' => 'Password',
     ];
-
+    $post = json_decode(file_get_contents('php://input'), true);
     foreach ($api as $key => $desc) {
-        if (!@val_exists($_POST[$key])) {
+        if (!@val_exists($post[$key])) {
             ApiResponse::error(500, "{$desc} value is missing");
         }
-        $api[$key] = sanitize($_POST[$key]); //sanitize values and store them inside the API
+        $api[$key] = sanitize($post[$key]); //sanitize values and store them inside the API
     }
 
-    $email = $_POST['email'];
-    $password = $_POST['password'];
+    $email = $api['email'];
+    $password = $api['password'];
 
     Auth::login($email, $password);
 }
