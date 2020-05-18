@@ -30,7 +30,7 @@ if ($httpMethod == 'POST') {
         'last_name' => 'Last name',
         'email' => 'Email',
         'password' => 'Password',
-        'confirm_password' = 'Password Confirmation',
+        'confirm_password' => 'Password Confirmation',
         'phone' => 'Phone'
     ];
     foreach ($api as $key => $desc) {
