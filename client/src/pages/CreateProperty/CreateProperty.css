@@ -1,0 +1,21 @@
+.CreateProperty {
+    position: relative;
+    background-image:url("../../images/bg5.svg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.inputPropertyForm {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.buttonWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.createPropertyButton {
+    width: 188.33px;
+}

@@ -1,0 +1,34 @@
+.Navbar ul {
+    list-style: none;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    height: 65px; /* test */
+    align-items: center; /* test */
+}
+
+.Navbar li {
+    display: inline;
+    padding: 10px;
+}
+
+.Navbar a {
+    text-decoration: none;
+    color: black;
+}
+
+.Navbar .selected {
+    font-weight: bold;
+    border-bottom: 1px solid lightblue;
+}
+
+nav {
+    background-color: white;
+    text-align: center;
+    box-shadow: 0px 3px 15px 1px rgba(0,0,0,0.2);
+}
+
+.Navbar img {
+    width: 35px;
+    height: 35px;
+}

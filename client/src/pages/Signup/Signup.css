@@ -1,0 +1,21 @@
+.Signup {
+    width: 100%;
+    /* height: 100%; */
+    background-image:url("../../images/bg5.svg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.section {
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    width: 100%;
+    height: calc(100% - 38px);
+}
+
+.Signup button {
+    margin: 20px;
+}
+
+

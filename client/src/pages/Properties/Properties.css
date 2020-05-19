@@ -1,0 +1,63 @@
+.Properties {
+    width: 100%;
+    height: 100%;
+    background-image:url("../../images/bg5.svg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.property-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 10px;
+    padding: 10px;
+}
+
+.property {
+    padding: 10px;
+    box-shadow: 0px 0px 4px 1px rgba(0,0,0,0.2);
+    border-bottom: 2px solid slateblue;
+    background: white;
+    border-radius: 4px;
+}
+
+.property .img {
+    background-color: lightblue;
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.propertyGeneral {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    align-items: end;
+    padding-top: 5px;
+}
+
+.propertyGeneral h3 {
+    font-size: 1.5em;
+    color: slateblue;
+}
+
+.propertyGeneral p {
+    display: grid;
+    align-content: center;
+}
+
+.propertyGeneral p:nth-child(n+2) {
+    color: gray;
+    font-size: .8em;
+    justify-content: center;
+    padding: 0px 2px;
+}
+
+.propertyGeneral p:nth-child(3) {
+    border-right: 1px solid slateblue;
+    border-left: 1px solid slateblue;
+}
+
+.propertyAddress {
+    padding-top: 15px;
+}
