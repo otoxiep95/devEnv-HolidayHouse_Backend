@@ -5,12 +5,12 @@ import logo from "../../images/logo.svg"
 
 export default class Navbar extends Component {
     render() {
-        return(
+        return (
             <div className="Navbar">
                 <nav>
                     <ul>
                         <li>
-                            <img src={logo} alt=""/>
+                            <img src={logo} alt="" />
                         </li>
                         <li>
                             <NavLink exact to="/" activeClassName="selected">
@@ -35,6 +35,11 @@ export default class Navbar extends Component {
                         <li>
                             <NavLink exact to="/signup" activeClassName="selected">
                                 Sign up
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink exact to="/logout" activeClassName="selected">
+                                Logout
                             </NavLink>
                         </li>
                     </ul>

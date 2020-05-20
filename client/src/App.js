@@ -7,6 +7,7 @@ import Login from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
 import "./App.css";
 import CreateProperty from "./pages/CreateProperty/CreateProperty";
+import Logout from "./pages/Logout/Logout";
 
 class App extends Component {
   render() {
@@ -21,6 +22,7 @@ class App extends Component {
               <Route exact path="/login" component={Login} />
               <Route exact path="/signup" component={Signup} />
               <Route exact path="/create-property" component={CreateProperty} />
+              <Route exact path="/logout" component={Logout} />
             </Switch>
           </main>
         </div>
