@@ -1,39 +1,43 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { useHistory } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
-export default class Logout extends Component {
 
-    componentDidMount() {
+export default function Logout(props) {
+    
+    const {
+        setIsAuth
+    } = props;
+
+    const history = useHistory();
+
+    function handleLogOut() {
         fetch("http://localhost/devenv_holiday_house/api/v1/auth.php", {
             method: "DELETE",
             credentials: "include",
             headers: {
                 Accept: "application/json",
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                email: this.state.email,
-                password: this.state.password
-            })
+                        "Content-Type": "application/json"
+            }
         })
-            .then(res => {
-                if (res.ok) {
-                    console.log("Doing great sweetie");
-                } else {
-                    throw res;
-                }
-            })
-            .catch(err => {
-                err.json().then(body => {
-                    console.log(body);
-                    this.setState({ error: body.message });
-                });
-            });
+        .then(res => {
+            if (res.ok) {
+                setIsAuth(false);
+                history.push("/");
+            } else {
+                throw res;
+            }
+        })
+        .catch(err => {
+            console.log("unable to log out")
+        });
     }
 
-    render() {
-        return (
-            <div className="Logout">
-            </div>
-        )
-    }
+    return (
+        <li onClick={handleLogOut}>
+            <NavLink to="/logout" activeClassName="selected"> 
+                Log out              
+            </NavLink>
+        </li>
+    )
 }

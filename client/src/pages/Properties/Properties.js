@@ -1,32 +1,47 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import "./Properties.css";
+import PropertyItem from "../../components/PropertyItem/PropertyItem";
 
-export default class Properties extends Component {
-  state = {
-    properties: [],
-    isLoading: true
-  };
-
-  componentDidMount() {
+export default function Properties() {
+  const [properties, setProperties] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  
+  useEffect(() => {
     fetch("http://localhost/devenv_holiday_house/api/v1/house.php?p=1", {
       headers: {
         Accept: "application/json",
-        "Content-Type": "application/json"
+                "Content-Type": "application/json"
       }
     })
-      .then(res => res.json())
-      .then(res => {
-        console.log(res);
-        this.setState({
-          properties: res.data,
-          isLoading: false
-        });
-      });
-  }
+    .then(res => res.json())
+    .then(data => {
+      setProperties(data.data);
+      setIsLoading(false);
+    });
+  }, []);
 
-  properties = () => {
+  return (
+    <div className="Properties">
+      {!isLoading ? (
+        <div className="property-list">
+          {properties && properties.map(property => (
+            <PropertyItem
+              key={property.house_id}
+              property={property}
+            />  
+          ))}
+        </div>
+
+      ) : (
+        <p>Loading properties..</p>
+      )}
+
+    </div>
+  )
+
+  /* properties = () => {
     return this.state.properties.map((property, i) => (
-      <div className="property" key={property.house_id}>
+      <div className="property" id={property.house_id} key={property.house_id}>
         <div>
           <div className="img"></div>
         </div>
@@ -45,10 +60,11 @@ export default class Properties extends Component {
         </div>
       </div>
     ));
-  };
+  }; */
 
-  render() {
-    return (
+  
+  
+    /* return (
       <div className="Properties">
         <h1>Properties</h1>
         {this.props.location.state && (
@@ -60,6 +76,6 @@ export default class Properties extends Component {
           {!this.state.isLoading ? this.properties() : <p>Loading...</p>}
         </div>
       </div>
-    );
-  }
+    ); */
+
 }

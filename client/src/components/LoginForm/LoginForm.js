@@ -1,17 +1,18 @@
-import React, { Component } from "react";
-import { withRouter } from "react-router-dom";
+import React, { useState } from "react";
+import { useHistory } from 'react-router-dom';
+export default function LoginForm(props) {
 
-class LoginForm extends Component {
+  const {
+    setIsAuth
+  } = props;
 
-  state = {
-    email: null,
-    password: null,
-    error: null,
-    isAuth: this.props.isAuth
-  };
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
+  const [error, setError] = useState(null);
 
+  const history = useHistory();
   
-  login = () => {
+  function handleLogin() {
     fetch("http://localhost/devenv_holiday_house/api/v1/auth.php", {
       method: "POST",
       credentials: "include",
@@ -20,27 +21,26 @@ class LoginForm extends Component {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        email: this.state.email,
-        password: this.state.password
+        email: email,
+        password: password
       })
     })
       .then(res => {
         if (res.ok) {
-          this.setState({ isAuth: true });
-          this.props.history.push("/properties");
+          setIsAuth(true);
+          history.push("/properties");
         } else {
           throw res;
         }
       })
       .catch(err => {
         err.json().then(body => {
-          console.log(body);
-          this.setState({ error: body.message });
+          setError(body.response);
         });
       });
-  };
+  }
+  
 
-  render() {
     return (
       <div className="LoginForm">
         <form method="POST">
@@ -48,22 +48,21 @@ class LoginForm extends Component {
             type="email"
             name="email"
             placeholder="Email"
-            onChange={e => this.setState({ email: e.target.value })}
+            onChange={e => setEmail(e.target.value)}
           />
           <input
             type="password"
             name="password"
             placeholder="Password"
-            onChange={e => this.setState({ password: e.target.value })}
+            onChange={e => setPassword(e.target.value)}
           />
-          <button type="button" onClick={this.login}>
+          <button type="button" onClick={handleLogin}>
             Log in
           </button>
-          {this.state.error ? <p>{this.state.error}</p> : null}
+          {error ? <p>{error}</p> : null}
         </form>
       </div>
     );
-  }
 }
 
-export default withRouter(LoginForm);
+/* export default withRouter(LoginForm); */

@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import "./Home.css";
 
-class Home extends Component {
-    state = {
+export default function Home() {
+   /*  state = {
         zipcode: undefined,
     }
 
@@ -15,17 +15,14 @@ class Home extends Component {
         //this.props.handleZipcodeChange(zipcode);
         this.props.history.push('/properties', { passedzipcode: zipcode });
     }
-
-    render() {
-        return (
-            <div className="Home">
-                <div>
-                    <input id="zipcode" placeholder="Zipcode" onChange={this.handleInputChange} />
-                    <button onClick={this.onFormSubmit}>Submit</button>
-                </div>
+ */
+    return (
+        <div className="Home">
+            <div>
+                <input id="zipcode" placeholder="Zipcode" /* onChange={this.handleInputChange} */ />
+                <button /* onClick={this.onFormSubmit} */>Submit</button>
             </div>
-        )
-    }
+        </div>
+    )
+    
 }
-
-export default Home;
