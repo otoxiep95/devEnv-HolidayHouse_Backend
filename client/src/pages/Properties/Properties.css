@@ -19,6 +19,7 @@
     border-bottom: 2px solid slateblue;
     background: white;
     border-radius: 4px;
+    cursor: pointer;
 }
 
 .property .img {
@@ -60,4 +61,28 @@
 
 .propertyAddress {
     padding-top: 15px;
+}
+
+
+.modal-container {
+    width: 100%;
+    height: calc(100% - 65px);
+    background: rgba(255,255,255,.8);
+    position: absolute;
+    display: grid;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+}
+
+.modal {
+    width: 70%;
+    padding: 10px;
+    box-shadow: 0px 0px 4px 1px rgba(0,0,0,0.2);
+    background: white;
+    border-radius: 20px;
+}
+
+.modal span {
+    text-align: right;
 }

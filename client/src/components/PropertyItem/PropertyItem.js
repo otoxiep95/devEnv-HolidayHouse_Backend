@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 
 export default function PropertyItem(props) {
+    
+    const {
+        fetchProperty
+    } = props;
 
     const {
         house_id,
@@ -18,7 +22,7 @@ export default function PropertyItem(props) {
     } = props.property;
 
     return (
-        <div id={house_id} key={house_id} className="PropertyItem property" /* onClick={() => setModal(true) */>
+        <div id={house_id} key={house_id} className="PropertyItem property" onClick={() => fetchProperty(house_id)}>
             <div>
                 <div className="img"></div>
             </div>
