@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useHistory } from 'react-router-dom';
+
 export default function LoginForm(props) {
 
   const {
@@ -28,14 +29,14 @@ export default function LoginForm(props) {
       .then(res => {
         if (res.ok) {
           setIsAuth(true);
-          history.push("/properties");
+          history.push("/profile");
         } else {
           throw res;
         }
       })
       .catch(err => {
         err.json().then(body => {
-          setError(body.response);
+          setError(body.message);
         });
       });
   }

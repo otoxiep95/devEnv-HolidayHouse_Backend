@@ -23,15 +23,15 @@ export default function PropertyItem(props) {
             </div>
             <div className="propertyInfo">
                 <div className="propertyGeneral">
-                <h3>${price_per_night}</h3>
-                <p>{bedroom} bds</p>
-                <p>{bathroom} ba</p>
-                <p>{size} sqm</p>
+                    <h3>${price_per_night}</h3>
+                    <p>{bedroom} bds</p>
+                    <p>{bathroom} ba</p>
+                    <p>{size} sqm</p>
                 </div>
                 <div className="propertyAddress">
-                <p>
-                    {street}, {city}, {country}
-                </p>
+                    <p>
+                        {street}, {city}, {country}
+                    </p>
                 </div>
             </div>
         </div>

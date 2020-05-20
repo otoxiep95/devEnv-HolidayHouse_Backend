@@ -35,6 +35,11 @@ export default function Navbar(props) {
                                     Create property
                                 </NavLink>
                             </li>
+                            <li>
+                                <NavLink exact to="/profile" activeClassName="selected">
+                                    Profile
+                                </NavLink>
+                            </li>
                             <Logout setIsAuth={setIsAuth}/>
                         </>
 

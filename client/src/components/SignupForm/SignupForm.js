@@ -1,93 +1,92 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
-export default class SignupForm extends Component {
-    state = {
-        first_name: null,
-        last_name: null,
-        phone: null,
-        email: null,
-        password: null,
-        confirm_password: null,
-        error: null
-    };
+export default function SignupForm() {
 
+    const [firstName, setFirstName] = useState(null);
+    const [lastName, setLastName] = useState(null);
+    const [phone, setPhone] = useState(null);
+    const [email, setEmail] = useState(null);
+    const [password, setPassword] = useState(null);
+    const [confirmPassword, setConfirmPassword] = useState(null);
+    const [error, setError] = useState(null);
 
-    signup = () => {
+    const history = useHistory();
+
+    function handleSignup() {
         fetch("http://localhost/devenv_holiday_house/api/v1/user.php", {
           method: "POST",
           credentials: "include",
           headers: {
             Accept: "application/json",
-            "Content-Type": "application/json"
+                    "Content-Type": "application/json"
           },
           body: JSON.stringify({
-            first_name: this.state.first_name,
-            last_name: this.state.last_name,
-            phone: this.state.phone,
-            email: this.state.email,
-            password: this.state.password,
-            confirm_password: this.state.confirm_password
+            first_name: firstName,
+            last_name: lastName,
+            phone: phone,
+            email: email,
+            password: password,
+            confirm_password: confirmPassword
           })
         })
-          .then(res => {
+        .then(res => {
             if (res.ok) {
-                this.props.history.push("/login");
+                history.push("/login");
             } else {
               throw res;
             }
-          })
-          .catch(err => {
+        })
+        .catch(err => {
             err.json().then(body => {
               console.log(body);
-              this.setState({ error: body.message });
+              setError(body.message);
             });
         });
-    };
-
-    render() {
-        return (
-            <div className="SignupForm">
-                <form method="POST">
-                    <input 
-                        type="text" 
-                        name="first_name" 
-                        placeholder="First name"
-                        onChange={e => this.setState({ first_name: e.target.value })}
-                    />
-                    <input 
-                        type="text" 
-                        name="last_name" 
-                        placeholder="Last name"
-                        onChange={e => this.setState({ last_name: e.target.value })}
-                    />
-                    <input 
-                        type="email" 
-                        name="email" 
-                        placeholder="Email"
-                        onChange={e => this.setState({ email: e.target.value })}
-                    /> 
-                    <input 
-                        type="text" 
-                        name="phone" 
-                        placeholder="Phone number"
-                        onChange={e => this.setState({ phone: e.target.value })}
-                    /> 
-                    <input 
-                        type="password" 
-                        name="password" 
-                        placeholder="Password"
-                        onChange={e => this.setState({ password: e.target.value })}
-                    /> 
-                    <input 
-                        type="password" 
-                        name="confirm_password" 
-                        placeholder="Repeat Password"
-                        onChange={e => this.setState({ confirm_password: e.target.value })}
-                    /> 
-                    <button type="button" onClick={this.signup}>Sign up</button>
-                </form>
-                {this.state.error ? <p>{this.state.error}</p> : null}
-            </div>
-        )
     }
+
+    return (
+        <div className="SignupForm">
+            <form method="POST">
+                <input 
+                    type="text" 
+                    name="first_name" 
+                    placeholder="First name"
+                    onChange={e => setFirstName(e.target.value)}
+                />
+                <input 
+                    type="text" 
+                    name="last_name" 
+                    placeholder="Last name"
+                    onChange={e => setLastName(e.target.value)}
+                />
+                <input 
+                    type="email" 
+                    name="email" 
+                    placeholder="Email"
+                    onChange={e => setEmail(e.target.value)}
+                /> 
+                <input 
+                    type="text" 
+                    name="phone" 
+                    placeholder="Phone number"
+                    onChange={e => setPhone(e.target.value)}
+                /> 
+                <input 
+                    type="password" 
+                    name="password" 
+                    placeholder="Password"
+                    onChange={e => setPassword(e.target.value)}
+                /> 
+                <input 
+                    type="password" 
+                    name="confirm_password" 
+                    placeholder="Repeat Password"
+                    onChange={e => setConfirmPassword(e.target.value)}
+                /> 
+                <button type="button" onClick={handleSignup}>Sign up</button>
+            </form>
+            {error ? <p>{error}</p> : null}
+        </div>
+    )
 }

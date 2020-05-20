@@ -6,7 +6,7 @@ import Properties from "./pages/Properties/Properties";
 import Login from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
 import CreateProperty from "./pages/CreateProperty/CreateProperty";
-import Logout from "./pages/Logout/Logout";
+import Profile from "./pages/Profile/Profile";
 import "./App.css";
 
 export default function App() {
@@ -45,6 +45,10 @@ export default function App() {
             <Route 
               path="/properties" 
               component={Properties} 
+            />
+            <Route 
+              path="/profile" 
+              component={Profile} 
             />
             <Route 
               path="/login" 
