@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import PropertyForm from "../../components/PropertyForm/PropertyForm";
 import "./CreateProperty.css";
 

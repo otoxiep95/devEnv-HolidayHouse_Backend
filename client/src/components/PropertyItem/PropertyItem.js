@@ -3,16 +3,16 @@ import React from 'react';
 export default function PropertyItem(props) {
     const {
         house_id,
-        title,
-        description,
+       /*  title,
+        description, */
         country,
         city,
-        postal,
+        /* postal, */
         street,
         size,
         bedroom,
         bathroom,
-        image,
+        /* image, */
         price_per_night
     } = props.property;
 

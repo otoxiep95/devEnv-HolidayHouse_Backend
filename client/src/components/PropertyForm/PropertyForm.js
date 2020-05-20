@@ -13,8 +13,8 @@ export default function PropertyForm() {
   const [postal, setPostal] = useState(0);
   const [pricePrNight, setpricePrNight] = useState(0);
   const [image, setImage] = useState("asdasd.jpg");
-  const [houseId, setHouseId] = useState(0);
-  const [userId, setUserId] = useState(0);
+ /*  const [houseId, setHouseId] = useState(0);
+  const [userId, setUserId] = useState(0); */
   const [error, setError] = useState(null);
 
 
