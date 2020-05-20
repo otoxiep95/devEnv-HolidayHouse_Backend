@@ -4,3 +4,31 @@
     background-repeat: no-repeat;
     background-size: cover;
 }
+
+.profile-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 15px;
+    padding: 15px;
+}
+
+.profile-section h1 {
+    grid-column: 1/-1;
+}
+
+.profile-section form div {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 10px;
+    margin: 0px 20px 0px 20px;
+}
+
+.profile-section label {
+    color: slateblue;
+    font-weight: 500;
+    margin-left: 20px;
+}
+
+.profile-section input {
+    padding: 0px 0px 10px 0px;
+}

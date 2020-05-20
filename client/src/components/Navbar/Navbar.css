@@ -2,9 +2,13 @@
     list-style: none;
     margin: 0;
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     height: 65px; /* test */
     align-items: center; /* test */
+}
+
+.Navbar.auth ul {
+    grid-template-columns: repeat(6, 1fr);
 }
 
 .Navbar li {
@@ -19,7 +23,6 @@
 
 .Navbar .selected {
     font-weight: bold;
-    border-bottom: 1px solid lightblue;
 }
 
 nav {

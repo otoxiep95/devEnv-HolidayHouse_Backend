@@ -5,6 +5,7 @@ import PropertyItem from "../../components/PropertyItem/PropertyItem";
 export default function Properties() {
   const [properties, setProperties] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  /* const [modal, setModal] = useState(false); */
   
   useEffect(() => {
     fetch("http://localhost/devenv_holiday_house/api/v1/house.php?p=1", {

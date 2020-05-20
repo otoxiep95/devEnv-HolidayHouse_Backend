@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 export default function PropertyItem(props) {
+
     const {
         house_id,
        /*  title,
@@ -17,7 +18,7 @@ export default function PropertyItem(props) {
     } = props.property;
 
     return (
-        <div id={house_id} key={house_id} className="PropertyItem property">
+        <div id={house_id} key={house_id} className="PropertyItem property" /* onClick={() => setModal(true) */>
             <div>
                 <div className="img"></div>
             </div>

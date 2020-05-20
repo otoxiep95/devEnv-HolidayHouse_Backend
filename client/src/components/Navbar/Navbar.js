@@ -12,7 +12,7 @@ export default function Navbar(props) {
     } = props;
 
     return (
-        <div className="Navbar">
+        <div className={isAuth ? "Navbar auth" : "Navbar"}>
             <nav>
                 <ul>
                     <li>
