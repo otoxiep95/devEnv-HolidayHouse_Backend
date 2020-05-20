@@ -5,7 +5,12 @@ import logo from "../../images/logo.svg"
 
 export default class Navbar extends Component {
     render() {
-        return (
+        
+        const {
+            isAuth
+        } = this.props;
+
+        return(
             <div className="Navbar">
                 <nav>
                     <ul>
@@ -22,26 +27,34 @@ export default class Navbar extends Component {
                                 Properties
                             </NavLink>
                         </li>
-                        <li>
-                            <NavLink exact to="/create-property" activeClassName="selected">
-                                Create property
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink exact to="/login" activeClassName="selected">
-                                Log in
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink exact to="/signup" activeClassName="selected">
-                                Sign up
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink exact to="/logout" activeClassName="selected">
-                                Logout
-                            </NavLink>
-                        </li>
+                        {isAuth ? (
+                            <>
+                                <li>
+                                    <NavLink exact to="/create-property" activeClassName="selected">
+                                        Create property
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <NavLink exact to="/logout" activeClassName="selected">
+                                        Logout
+                                    </NavLink>
+                                </li>
+                            </>
+
+                        ) : (
+                            <>
+                                <li>
+                                    <NavLink exact to="/login" activeClassName="selected">
+                                        Log in
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <NavLink exact to="/signup" activeClassName="selected">
+                                        Sign up
+                                    </NavLink>
+                                </li>
+                            </>
+                        )}
                     </ul>
                 </nav>
             </div>

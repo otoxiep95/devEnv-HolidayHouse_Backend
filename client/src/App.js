@@ -10,19 +10,58 @@ import CreateProperty from "./pages/CreateProperty/CreateProperty";
 import Logout from "./pages/Logout/Logout";
 
 class App extends Component {
+  state = {
+    isAuth: false
+  }
+
+  componentDidMount() {
+    fetch("http://localhost/devenv_holiday_house/api/v1/user.php", {
+      credentials: "include",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      }
+    })
+    .then(res => {
+      console.log(res)
+      if(res.ok) {
+        this.setState({
+          isAuth: true
+        });
+      }
+    })
+  }
   render() {
     return (
       <Router>
         <div className="App">
-          <Navbar />
+          <Navbar isAuth={this.state.isAuth} />
           <main>
             <Switch>
-              <Route exact path="/" component={Home} />
-              <Route exact path="/properties" component={Properties} />
-              <Route exact path="/login" component={Login} />
-              <Route exact path="/signup" component={Signup} />
-              <Route exact path="/create-property" component={CreateProperty} />
-              <Route exact path="/logout" component={Logout} />
+              <Route 
+                exact path="/" 
+                component={Home}
+              />
+              <Route 
+                path="/properties" 
+                component={Properties} 
+              />
+              <Route 
+                path="/login" 
+                render={() => <Login isAuth={this.state.isAuth}/>} 
+              />
+              <Route 
+                path="/signup" 
+                component={Signup} 
+              />
+              <Route 
+                path="/create-property" 
+                component={CreateProperty} 
+              />
+              <Route 
+                path="/logout" 
+                component={Logout} 
+              />
             </Switch>
           </main>
         </div>
