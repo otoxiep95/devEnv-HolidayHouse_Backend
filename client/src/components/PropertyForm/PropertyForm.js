@@ -15,7 +15,8 @@ class PropertyForm extends Component {
     price_per_night: 0,
     image: "asdasd.jpg",
     house_id: 0,
-    user_id: 0
+    user_id: 0,
+    error: null
   };
 
   createPropertyHandler = () => {
@@ -58,7 +59,7 @@ class PropertyForm extends Component {
   render() {
     return (
       <div className="PropertyForm">
-        <form className="inputPropertyForm" method="POST">
+        <form className="inputPropertyForm" method="POST" /* enctype="multipart/form-data" */>
           <input
             type="text"
             name="title"
@@ -119,6 +120,11 @@ class PropertyForm extends Component {
             placeholder="Price pr. night"
             onChange={e => this.setState({ price_per_night: e.target.value })}
           />
+           <input
+            type="file"
+            name="image"
+            onChange={e => this.setState({ image: e.target.value })}
+          />
           <div className="buttonWrapper">
             <button
               type="button"
@@ -129,6 +135,7 @@ class PropertyForm extends Component {
             </button>
           </div>
         </form>
+        {this.state.error ? <p>{this.state.error}</p> : null}
       </div>
     );
   }

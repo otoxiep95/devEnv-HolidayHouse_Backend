@@ -5,6 +5,12 @@ import logo from "../../images/logo.svg"
 
 export default class Navbar extends Component {
     render() {
+
+        const {
+            isAuth
+        } = this.props;
+
+        console.log(this.props)
         return(
             <div className="Navbar">
                 <nav>
@@ -22,21 +28,29 @@ export default class Navbar extends Component {
                                 Properties
                             </NavLink>
                         </li>
-                        <li>
-                            <NavLink exact to="/create-property" activeClassName="selected">
-                                Create property
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink exact to="/login" activeClassName="selected">
-                                Log in
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink exact to="/signup" activeClassName="selected">
-                                Sign up
-                            </NavLink>
-                        </li>
+                        {isAuth ? (
+                            <>
+                                <li>
+                                    <NavLink exact to="/create-property" activeClassName="selected">
+                                        Create property
+                                    </NavLink>
+                                </li>
+                            </>
+
+                        ): (
+                            <>
+                                <li>
+                                    <NavLink exact to="/login" activeClassName="selected">
+                                        Log in
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <NavLink exact to="/signup" activeClassName="selected">
+                                        Sign up
+                                    </NavLink>
+                                </li>
+                            </>
+                        )}
                     </ul>
                 </nav>
             </div>

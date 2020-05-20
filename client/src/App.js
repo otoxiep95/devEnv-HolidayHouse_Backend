@@ -9,11 +9,32 @@ import "./App.css";
 import CreateProperty from "./pages/CreateProperty/CreateProperty";
 
 class App extends Component {
+  state = {
+    isAuth: false
+  }
+
+  componentDidMount() {
+    fetch("http://localhost/devenv_holiday_house/api/v1/user.php", {
+      credentials: "include",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      }
+    })
+    .then(res => {
+      console.log(res)
+      if(res.ok) {
+        this.setState({
+          isAuth: true
+        });
+      }
+    })
+  }
   render() {
     return (
       <Router>
         <div className="App">
-          <Navbar />
+          <Navbar isAuth={this.state.isAuth} />
           <main>
             <Switch>
               <Route exact path="/" component={Home} />
