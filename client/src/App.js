@@ -37,11 +37,26 @@ class App extends Component {
           <Navbar isAuth={this.state.isAuth} />
           <main>
             <Switch>
-              <Route exact path="/" component={Home} />
-              <Route exact path="/properties" component={Properties} />
-              <Route exact path="/login" component={Login} />
-              <Route exact path="/signup" component={Signup} />
-              <Route exact path="/create-property" component={CreateProperty} />
+              <Route 
+                exact path="/" 
+                component={Home}
+              />
+              <Route 
+                path="/properties" 
+                component={Properties} 
+              />
+              <Route 
+                path="/login" 
+                render={() => <Login isAuth={this.state.isAuth}/>} 
+              />
+              <Route 
+                path="/signup" 
+                component={Signup} 
+              />
+              <Route 
+                path="/create-property" 
+                component={CreateProperty} 
+              />
             </Switch>
           </main>
         </div>

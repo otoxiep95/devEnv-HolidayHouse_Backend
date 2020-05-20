@@ -5,12 +5,11 @@ import logo from "../../images/logo.svg"
 
 export default class Navbar extends Component {
     render() {
-
+        
         const {
             isAuth
         } = this.props;
 
-        console.log(this.props)
         return(
             <div className="Navbar">
                 <nav>

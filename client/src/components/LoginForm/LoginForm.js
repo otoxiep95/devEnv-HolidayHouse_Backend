@@ -2,12 +2,15 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 
 class LoginForm extends Component {
+
   state = {
     email: null,
     password: null,
-    error: null
+    error: null,
+    isAuth: this.props.isAuth
   };
 
+  
   login = () => {
     fetch("http://localhost/devenv_holiday_house/api/v1/auth.php", {
       method: "POST",
@@ -23,6 +26,7 @@ class LoginForm extends Component {
     })
       .then(res => {
         if (res.ok) {
+          this.setState({ isAuth: true });
           this.props.history.push("/properties");
         } else {
           throw res;
