@@ -53,3 +53,11 @@ button {
 .App {
     height: 100vh;
 }
+
+.loading {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    height: 100%;
+}

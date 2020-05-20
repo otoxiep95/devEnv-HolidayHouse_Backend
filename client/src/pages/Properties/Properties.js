@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./Properties.css";
 import PropertyItem from "../../components/PropertyItem/PropertyItem";
+import { SyncLoader } from 'react-spinners';
 
 export default function Properties() {
   const [properties, setProperties] = useState([]);
@@ -19,7 +20,6 @@ export default function Properties() {
     })
     .then(res => res.json())
     .then(data => {
-      console.log(data.data)
       setProperty(data.data)
       setIsLoading(false);
     });
@@ -46,12 +46,19 @@ export default function Properties() {
         {modal && 
           <div className="modal-container" onClick={() => setModal(false)}>
             <div className="modal">
-              <div>
-                <img></img>
-              </div>
               <span onClick={() => setModal(false)}>X</span>
-              <h2>{property.title}</h2>
-              <p>{property.description}</p>
+              <div className="img">
+              </div>
+              <div>
+                <h2>{property.title}</h2>
+                <p>{property.description}</p>
+                <h3>Bedrooms</h3>
+                <p>{property.bedroom}</p>
+                <h3>Bathrooms</h3>
+                <p>{property.bathroom}</p>
+                <h3>Size</h3>
+                <p>{property.size} sqm</p>
+              </div>
             </div>
           </div>
         }
@@ -66,7 +73,9 @@ export default function Properties() {
         </div>
       </>
       ) : (
-        <p>Loading properties..</p>
+        <div className="loading">
+          <SyncLoader className="loader" loading={isLoading} color={"#b07acd"}/>
+        </div>
       )}
     </div>
   )

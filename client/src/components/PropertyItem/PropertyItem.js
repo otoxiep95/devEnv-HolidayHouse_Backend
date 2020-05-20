@@ -1,15 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 export default function PropertyItem(props) {
-    
+
     const {
         fetchProperty
     } = props;
 
     const {
         house_id,
-       /*  title,
-        description, */
         country,
         city,
         /* postal, */

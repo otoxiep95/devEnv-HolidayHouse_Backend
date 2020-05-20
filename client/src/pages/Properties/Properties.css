@@ -81,8 +81,28 @@
     box-shadow: 0px 0px 4px 1px rgba(0,0,0,0.2);
     background: white;
     border-radius: 20px;
+    position: relative;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 15px;
 }
 
 .modal span {
-    text-align: right;
+    position: absolute;
+    right: 0;
+    padding-right: 10px;
+    padding-top: 10px;
+}
+
+.modal h2 {
+    color: slateblue;
+    margin-bottom: 5px;
+}
+
+.modal .img {
+    background-color: lightblue;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 4px;
 }

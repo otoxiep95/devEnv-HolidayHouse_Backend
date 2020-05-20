@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import { SyncLoader } from 'react-spinners';
 import "./Profile.css";
 
 export default function Profile(props) {
@@ -21,7 +22,7 @@ export default function Profile(props) {
 
     const history = useHistory();
 
-    function fetchUser() {
+    /* function fetchUser() {
         fetch("http://localhost/devenv_holiday_house/api/v1/user.php", {
             credentials: "include",
             headers: {
@@ -41,7 +42,7 @@ export default function Profile(props) {
             setUser(data.data);
             setIsLoading(false);
         })
-    }
+    } */
 
     function updateUser() {
         fetch("http://localhost/devenv_holiday_house/api/v1/user.php", {
@@ -102,14 +103,32 @@ export default function Profile(props) {
     }
 
     useEffect(() => {
-        fetchUser();
-    }, [])
+        fetch("http://localhost/devenv_holiday_house/api/v1/user.php", {
+            credentials: "include",
+            headers: {
+                Accept: "application/json",
+                        "Content-Type": "application/json"
+            }
+        })
+        .then(res => {
+            console.log("res", res)
+            if(res.status === 401) {
+                return history.push("/")
+            } else {
+                return res.json();
+            }
+        })
+        .then(data => {
+            setUser(data.data);
+            setIsLoading(false);
+        })
+    }, [history])
     
     return (
         <div className="Profile">
-            <div className="profile-section">
                 {!isLoading ? (
                     <>
+                    <div className="profile-section">
                         <h1>Hi {user.first_name}.</h1>
                         <div className="container">
                             <form>
@@ -151,11 +170,13 @@ export default function Profile(props) {
                         <div className="container">
                             <h2>Properties</h2>
                         </div>
+                </div>
                     </>
                 ) : (
-                    <p>Loading profile...</p>
+                    <div className="loading">
+                        <SyncLoader className="loader" loading={isLoading} color={"#ffff"}/>
+                    </div>
                 )}
-            </div>
         </div>
     )
 }
