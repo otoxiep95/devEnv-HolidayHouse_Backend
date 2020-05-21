@@ -118,7 +118,7 @@ if ($httpMethod == 'PATCH') {
 
 if ($httpMethod == 'DELETE') {
     if (!Auth::is_authenticated()) {
-        ApiResponse::error(403, 'Please log in');
+        ApiResponse::error([], 'Please log in', 403);
     }
 
     $userId = Auth::getUserId();
@@ -137,4 +137,4 @@ if ($httpMethod == 'DELETE') {
     }
 };
 
-ApiResponse::error(403, "$httpMethod is not allowed");
+ApiResponse::error([], "$httpMethod is not allowed", 403);
