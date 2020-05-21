@@ -131,7 +131,7 @@ if ($httpMethod == 'DELETE') {
     ]);
     if ($stmtEx) {
         Auth::logout();
-        return ApiResponse::success($stmtEx, "User deleted", 200);
+        return ApiResponse::success([], "User deleted", 200);
     } else {
         return ApiResponse::error([], "something went wrong", 500);
     }
