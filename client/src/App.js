@@ -48,7 +48,7 @@ export default function App() {
             />
             <Route 
               path="/profile" 
-              component={Profile} 
+              render={() => <Profile setIsAuth={setIsAuth}/>}
             />
             <Route 
               path="/login" 
