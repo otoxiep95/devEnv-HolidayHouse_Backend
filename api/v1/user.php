@@ -6,7 +6,7 @@ $httpMethod = $_SERVER['REQUEST_METHOD']; //POST, GET, DELETE,...
 
 if ($httpMethod == 'GET') {
     if (!Auth::is_authenticated()) {
-        ApiResponse::error([], 'Unauthenticated', 401);
+        ApiResponse::error([], 'Unauthenticated', 403);
     }
     $userId = Auth::getUserId();
     //$userId = 4; //testing purposes
@@ -74,7 +74,7 @@ if ($httpMethod == 'POST') {
 
 if ($httpMethod == 'PATCH') {
     if (!Auth::is_authenticated()) {
-        ApiResponse::error(401, 'Please log in');
+        ApiResponse::error(403, 'Please log in');
     }
 
     $patch = json_decode(file_get_contents('php://input'), true);
@@ -118,7 +118,7 @@ if ($httpMethod == 'PATCH') {
 
 if ($httpMethod == 'DELETE') {
     if (!Auth::is_authenticated()) {
-        ApiResponse::error(401, 'Please log in');
+        ApiResponse::error(403, 'Please log in');
     }
 
     $userId = Auth::getUserId();
@@ -130,6 +130,7 @@ if ($httpMethod == 'DELETE') {
         'userIdVal' => $userId
     ]);
     if ($stmtEx) {
+        Auth::logout();
         return ApiResponse::success($stmtEx, "User deleted", 200);
     } else {
         return ApiResponse::error([], "something went wrong", 500);
