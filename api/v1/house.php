@@ -15,9 +15,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (isset($_GET['id'])) {
         $house_id = $_GET['id'];
         $conn = Database::connect();
-        $stmt = $conn->prepare("SELECT * FROM house
-        WHERE
-            house_id = :idVal;");
+        $stmt = $conn->prepare(
+            " SELECT house.*, user.email, user.phone 
+            FROM house
+            LEFT JOIN user ON 
+            house.user_id = user.user_id
+            WHERE house_id = :idVal;"
+        );
         $query = $stmt->execute([
             'idVal' => $house_id
         ]);
@@ -30,23 +34,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     }
 
     /**
+     * Get properties of the logged in user
+     */
+    if (isset($_GET['user'])) {
+        $user = $_GET['user'];
+        if ($user && Auth::is_authenticated()) {
+            $user_id = Auth::getUserId();
+            $conn = Database::connect();
+            $stmt = $conn->prepare("SELECT * FROM house
+            WHERE
+                user_id = :idVal;");
+            $query = $stmt->execute([
+                'idVal' => $user_id
+            ]);
+            if ($query) {
+                $data = $stmt->fetchAll();
+                return ApiResponse::success($data);
+            }
+        }
+    }
+
+    /**
      * Multiple house request, p for page number
      */
+    $page = 0;
     if (isset($_GET['p'])) {
         $page = $_GET['p'] - 1;
-        $start = $page * $per_page;
-        $conn = Database::connect();
-        $stmt = $conn->prepare("SELECT * FROM house LIMIT :startVal,:per_pageVal");
-        $query = $stmt->execute([
-            'startVal' => $start,
-            'per_pageVal' => $per_page
-        ]);
-        if ($query) {
-            $data = $stmt->fetchAll();
-            return ApiResponse::success($data);
-        }
-
-        return ApiResponse::error([], "Failed to get houses");
+    }
+    $start = $page * $per_page;
+    $conn = Database::connect();
+    $stmt = $conn->prepare("SELECT * FROM house LIMIT :startVal,:per_pageVal");
+    $query = $stmt->execute([
+        'startVal' => $start,
+        'per_pageVal' => $per_page
+    ]);
+    if ($query) {
+        $data = $stmt->fetchAll();
+        return ApiResponse::success($data);
     }
 
     return ApiResponse::error([], "Failed to get house");
