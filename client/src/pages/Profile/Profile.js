@@ -10,6 +10,9 @@ export default function Profile(props) {
   const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState();
 
+  //fetch user properties state
+  const [properties, setProperties] = useState([]);
+
   //update user states
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -19,28 +22,30 @@ export default function Profile(props) {
 
   const history = useHistory();
 
-  /* function fetchUser() {
-        fetch("http://localhost/devenv_holiday_house/api/v1/user.php", {
-            credentials: "include",
-            headers: {
-                Accept: "application/json",
-                        "Content-Type": "application/json"
-            }
-        })
-        .then(res => {
-            console.log("res", res)
-            if(res.status === 401) {
-                return history.push("/")
-            } else {
-                return res.json();
-            }
-        })
-        .then(data => {
-            setUser(data.data);
-            setIsLoading(false);
-        })
-    } */
-
+  
+  function getUserProperties() {
+    fetch("http://localhost/devenv_holiday_house/api/v1/house.php?user=1", {
+      credentials: "include",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      }
+    })
+    .then(res => {
+      if (!res.ok) {
+         history.push("/");
+         return false;
+      } else {
+        return res.json();
+      }
+    })
+    .then(data => {
+      if (data) {
+        console.log(data.data)
+        setProperties(data.data)
+      }
+    });
+  }
   function updateUser() {
     fetch("http://localhost/devenv_holiday_house/api/v1/user.php", {
       method: "PATCH",
@@ -57,7 +62,7 @@ export default function Profile(props) {
       })
     })
       .then(res => {
-        if (res.status === 401) {
+        if (res.status === 403) {
           return history.push("/");
         } else {
           return res.json();
@@ -84,11 +89,11 @@ export default function Profile(props) {
     })
       .then(res => {
         console.log(res);
-        if (res.status === 401) {
+        if (res.status === 403) {
           return history.push("/");
         }
         if (res.ok) {
-          //   setIsAuth(false);
+          setIsAuth(false); 
           return history.push("/");
         }
       })
@@ -109,17 +114,23 @@ export default function Profile(props) {
       }
     })
       .then(res => {
-        console.log("res", res);
-        if (res.status === 401) {
-          return history.push("/");
+        /* console.log("res", res); */
+        if (!res.ok) {
+           history.push("/");
+           return false;
         } else {
           return res.json();
         }
       })
       .then(data => {
-        setUser(data.data);
-        setIsLoading(false);
+        if (data) {
+            /* console.log(data.data); */
+            setUser(data.data);
+            setIsLoading(false);
+        }
       });
+
+      getUserProperties();
   }, [history]);
 
   return (
@@ -171,6 +182,15 @@ export default function Profile(props) {
             </div>
             <div className="container">
               <h2>Properties</h2>
+              {properties && properties.map(property => 
+                <div key={property.house_id}>
+                  <h3>{property.title}</h3>
+                  <span>Created at: date</span>
+                  <div className="img">
+                  </div>
+                </div>
+              )}
+              {!properties.length && <p>You have no properties yet</p>}
             </div>
           </div>
         </>
