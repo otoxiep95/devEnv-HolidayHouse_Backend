@@ -46,6 +46,8 @@ export default function Profile(props) {
       }
     });
   }
+
+
   function updateUser() {
     fetch("http://localhost/devenv_holiday_house/api/v1/user.php", {
       method: "PATCH",
@@ -104,6 +106,7 @@ export default function Profile(props) {
         });
       });
   }
+  
 
   useEffect(() => {
     fetch("http://localhost/devenv_holiday_house/api/v1/user.php", {
@@ -124,8 +127,12 @@ export default function Profile(props) {
       })
       .then(data => {
         if (data) {
-            /* console.log(data.data); */
-            setUser(data.data);
+          data = data.data
+          console.log("user", data)
+            setFirstName(data.first_name)
+            setLastName(data.last_name)
+            setEmail(data.email)
+            setPhone(data.phone)
             setIsLoading(false);
         }
       });
@@ -138,35 +145,35 @@ export default function Profile(props) {
       {!isLoading ? (
         <>
           <div className="profile-section">
-            <h1>Hi {user.first_name}.</h1>
+            <h1>Hi {firstName}.</h1>
             <div className="container">
               <form>
                 <label>First name</label>
                 <input
                   type="text"
                   name="first_name"
-                  defaultValue={user.first_name}
+                  value={firstName}
                   onChange={e => setFirstName(e.target.value)}
                 />
                 <label>Last name</label>
                 <input
                   type="text"
                   name="last_name"
-                  defaultValue={user.last_name}
+                  value={lastName}
                   onChange={e => setLastName(e.target.value)}
                 />
                 <label>Email</label>
                 <input
                   type="email"
                   name="email"
-                  defaultValue={user.email}
+                  value={email}
                   onChange={e => setEmail(e.target.value)}
                 />
                 <label>Phone number</label>
                 <input
                   type="text"
                   name="phone"
-                  defaultValue={user.phone}
+                  value={phone}
                   onChange={e => setPhone(e.target.value)}
                 />
                 <div>
@@ -188,6 +195,8 @@ export default function Profile(props) {
                   <span>Created at: date</span>
                   <div className="img">
                   </div>
+                  <button>Update</button>
+                  <button>Delete</button>
                 </div>
               )}
               {!properties.length && <p>You have no properties yet</p>}
