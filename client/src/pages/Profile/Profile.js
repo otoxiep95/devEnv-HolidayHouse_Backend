@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import { SyncLoader } from "react-spinners";
 import "./Profile.css";
+import PropertyItemProfile from "../../components/PropertyItemProfile/PropertyItemProfile";
 
 export default function Profile(props) {
   const { setIsAuth } = props;
 
-  //fetch user states
   const [isLoading, setIsLoading] = useState(true);
-  const [user, setUser] = useState();
 
   //fetch user properties state
   const [properties, setProperties] = useState([]);
@@ -106,6 +105,29 @@ export default function Profile(props) {
         });
       });
   }
+
+  function deleteProperty(house_id) {
+    console.log("hi")
+    fetch("http://localhost/devenv_holiday_house/api/v1/house.php", {
+      method: "DELETE",
+      credentials: "include",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        house_id: house_id
+      })
+    })
+    .then(res => {
+      if(res.ok) {
+        const index = properties.findIndex(property => property.house_id === house_id);
+        const newProperties = [...properties];
+        newProperties.splice(index, 1);
+        setProperties(newProperties);
+      }
+    })  
+  }
   
 
   useEffect(() => {
@@ -117,7 +139,6 @@ export default function Profile(props) {
       }
     })
       .then(res => {
-        /* console.log("res", res); */
         if (!res.ok) {
            history.push("/");
            return false;
@@ -128,12 +149,11 @@ export default function Profile(props) {
       .then(data => {
         if (data) {
           data = data.data
-          console.log("user", data)
-            setFirstName(data.first_name)
-            setLastName(data.last_name)
-            setEmail(data.email)
-            setPhone(data.phone)
-            setIsLoading(false);
+          setFirstName(data.first_name)
+          setLastName(data.last_name)
+          setEmail(data.email)
+          setPhone(data.phone)
+          setIsLoading(false);
         }
       });
 
@@ -190,14 +210,11 @@ export default function Profile(props) {
             <div className="container">
               <h2>Properties</h2>
               {properties && properties.map(property => 
-                <div key={property.house_id}>
-                  <h3>{property.title}</h3>
-                  <span>Created at: date</span>
-                  <div className="img">
-                  </div>
-                  <button>Update</button>
-                  <button>Delete</button>
-                </div>
+                <PropertyItemProfile
+                  key={property.house_id}
+                  property={property}
+                  deleteProperty={deleteProperty}
+                />
               )}
               {!properties.length && <p>You have no properties yet</p>}
             </div>

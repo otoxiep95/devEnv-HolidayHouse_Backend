@@ -3,7 +3,8 @@ import React from 'react';
 export default function PropertyItem(props) {
 
     const {
-        fetchProperty
+        fetchProperty,
+        profile
     } = props;
 
     const {
