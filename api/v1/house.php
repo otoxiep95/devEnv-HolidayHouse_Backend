@@ -209,7 +209,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'PATCH') {
         'postal' => 'Postal',
         'price_per_night' => 'Price per night',
         'image' => 'Image',
+<<<<<<< HEAD
         'house_id' => 'Id house'
+=======
+        'house_id' => 'houseId'
+>>>>>>> tiril
     ];
 
     //Check existence and sanitize values
@@ -253,6 +257,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'PATCH') {
         WHERE
             house_id = :house_idVal
         ");
+
+
         $query = $stmt->execute([
             'titleVal' => $api['title'],
             'descriptionVal' => $api['description'],

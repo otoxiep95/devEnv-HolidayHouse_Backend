@@ -1,48 +1,31 @@
 import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import { SyncLoader } from "react-spinners";
 import "./Profile.css";
+import PropertyItemProfile from "../../components/PropertyItemProfile/PropertyItemProfile";
 
 export default function Profile(props) {
   const { setIsAuth } = props;
 
-  //fetch user states
   const [isLoading, setIsLoading] = useState(true);
-  const [user, setUser] = useState();
+  const [successMessage, setSuccessMessage] = useState("");
+  const [error, setError] = useState(null);
+
+  //fetch user properties state
+  const [properties, setProperties] = useState([]);
 
   //update user states
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [error, setError] = useState(null);
 
   const history = useHistory();
 
   // Image upload
   const [image, setImage] = useState(null);
 
-  /* function fetchUser() {
-        fetch("http://localhost/devenv_holiday_house/api/v1/user.php", {
-            credentials: "include",
-            headers: {
-                Accept: "application/json",
-                        "Content-Type": "application/json"
-            }
-        })
-        .then(res => {
-            console.log("res", res)
-            if(res.status === 401) {
-                return history.push("/")
-            } else {
-                return res.json();
-            }
-        })
-        .then(data => {
-            setUser(data.data);
-            setIsLoading(false);
-        })
-    } */
+  
 
   function updateUser() {
     fetch("http://localhost/devenv_holiday_house/api/v1/user.php", {
@@ -60,7 +43,7 @@ export default function Profile(props) {
       })
     })
       .then(res => {
-        if (res.status === 401) {
+        if (res.status === 403) {
           return history.push("/");
         } else {
           return res.json();
@@ -68,6 +51,7 @@ export default function Profile(props) {
       })
       .then(data => {
         console.log(data);
+        setSuccessMessage("Profile updated");
       })
       .catch(err => {
         err.json().then(body => {
@@ -87,11 +71,11 @@ export default function Profile(props) {
     })
       .then(res => {
         console.log(res);
-        if (res.status === 401) {
+        if (res.status === 403) {
           return history.push("/");
         }
         if (res.ok) {
-          //   setIsAuth(false);
+          setIsAuth(false); 
           return history.push("/");
         }
       })
@@ -104,7 +88,7 @@ export default function Profile(props) {
   }
 
   // Upload image to backend
-  function uploadImage() {
+/*   function uploadImage() {
     let formData = new FormData();
     formData.append("img", image);
     fetch("http://localhost/devenv_holiday_house/api/v1/image.php", {
@@ -123,7 +107,7 @@ export default function Profile(props) {
       .then(data => {
         console.log(data);
       });
-  }
+  } */
 
   useEffect(() => {
     fetch("http://localhost/devenv_holiday_house/api/v1/user.php", {
@@ -134,17 +118,25 @@ export default function Profile(props) {
       }
     })
       .then(res => {
-        console.log("res", res);
-        if (res.status === 401) {
-          return history.push("/");
+        if (!res.ok) {
+           history.push("/");
+           return false;
         } else {
           return res.json();
         }
       })
       .then(data => {
-        setUser(data.data);
-        setIsLoading(false);
+        if (data) {
+          data = data.data
+          setFirstName(data.first_name)
+          setLastName(data.last_name)
+          setEmail(data.email)
+          setPhone(data.phone)
+          setIsLoading(false);
+        }
       });
+
+      getUserProperties();
   }, [history]);
 
   return (
@@ -152,35 +144,35 @@ export default function Profile(props) {
       {!isLoading ? (
         <>
           <div className="profile-section">
-            <h1>Hi {user.first_name}.</h1>
+            <h1>Hi {firstName}.</h1>
             <div className="container">
               <form>
                 <label>First name</label>
                 <input
                   type="text"
                   name="first_name"
-                  defaultValue={user.first_name}
+                  value={firstName}
                   onChange={e => setFirstName(e.target.value)}
                 />
                 <label>Last name</label>
                 <input
                   type="text"
                   name="last_name"
-                  defaultValue={user.last_name}
+                  value={lastName}
                   onChange={e => setLastName(e.target.value)}
                 />
                 <label>Email</label>
                 <input
                   type="email"
                   name="email"
-                  defaultValue={user.email}
+                  value={email}
                   onChange={e => setEmail(e.target.value)}
                 />
                 <label>Phone number</label>
                 <input
                   type="text"
                   name="phone"
-                  defaultValue={user.phone}
+                  value={phone}
                   onChange={e => setPhone(e.target.value)}
                 />
                 <div>
@@ -193,10 +185,11 @@ export default function Profile(props) {
                 </div>
               </form>
               {error ? <p>{error}</p> : null}
+              {successMessage ? <p>{successMessage}</p> : null}
             </div>
             <div className="container">
               <h2>Properties</h2>
-              <h4>Upload image</h4>
+              {/* <h4>Upload image</h4>
               <form
                 encType="multipart/form-data"
                 style={{ border: "1px solid black", margin: "10px" }}
@@ -218,7 +211,15 @@ export default function Profile(props) {
                     Upload
                   </button>
                 </div>
-              </form>
+              </form> */}
+              {properties && properties.map(property => 
+                <PropertyItemProfile
+                  key={property.house_id}
+                  property={property}
+                  deleteProperty={deleteProperty}
+                />
+              )}
+              {!properties.length && <p>You have no properties yet</p>}
             </div>
           </div>
         </>

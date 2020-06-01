@@ -1,0 +1,15 @@
+.PropertyItemProfile {
+    margin: 10px 0px;
+    margin-bottom: 20px;
+    display: grid;
+}
+
+.PropertyItemProfile .buttons {
+    justify-self: right;
+    padding-top: 10px;
+}
+
+.PropertyItemProfile .buttons button {
+    width: 100px;
+    margin-left: 5px;
+}

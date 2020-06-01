@@ -23,6 +23,14 @@ form {
     padding: 20px;
 }
 
+label {
+    display: grid;
+    margin: 20px;
+    color: slateblue;
+    font-weight: 500;
+    
+}
+
 input {
     padding: 10px;
     margin: 20px;
@@ -31,6 +39,11 @@ input {
     border: none;
     background: transparent;
     border-bottom: 1px slateblue solid;
+}
+
+label input {
+    padding-left: 0px;
+    margin: 0px;
 }
 
 button {
@@ -61,3 +74,4 @@ button {
     align-content: center;
     height: 100%;
 }
+

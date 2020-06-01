@@ -8,6 +8,7 @@ import Signup from "./pages/Signup/Signup";
 import CreateProperty from "./pages/CreateProperty/CreateProperty";
 import Profile from "./pages/Profile/Profile";
 import "./App.css";
+import UpdateProperty from "./pages/UpdateProperty/UpdateProperty";
 
 export default function App() {
   const [isAuth, setIsAuth] = useState(false);
@@ -61,6 +62,10 @@ export default function App() {
             <Route 
               path="/create-property" 
               component={CreateProperty} 
+            />
+            <Route 
+              path="/update-property/:id" 
+              component={UpdateProperty} 
             />
           </Switch>
         </main>
