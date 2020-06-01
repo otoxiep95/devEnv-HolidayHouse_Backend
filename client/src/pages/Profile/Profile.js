@@ -8,6 +8,8 @@ export default function Profile(props) {
   const { setIsAuth } = props;
 
   const [isLoading, setIsLoading] = useState(true);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [error, setError] = useState(null);
 
   //fetch user properties state
   const [properties, setProperties] = useState([]);
@@ -17,7 +19,6 @@ export default function Profile(props) {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [error, setError] = useState(null);
 
   const history = useHistory();
 
@@ -71,6 +72,7 @@ export default function Profile(props) {
       })
       .then(data => {
         console.log(data);
+        setSuccessMessage("Profile updated");
       })
       .catch(err => {
         err.json().then(body => {
@@ -206,6 +208,7 @@ export default function Profile(props) {
                 </div>
               </form>
               {error ? <p>{error}</p> : null}
+              {successMessage ? <p>{successMessage}</p> : null}
             </div>
             <div className="container">
               <h2>Properties</h2>

@@ -41,6 +41,8 @@
     border-radius: 4px;
 }
 
-.Profile .container {
+.Profile .container:nth-child(3) {
     padding: 20px;
+    overflow-x: scroll;
+    height: 600px;
 }
