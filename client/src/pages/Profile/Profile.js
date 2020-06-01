@@ -19,6 +19,9 @@ export default function Profile(props) {
 
   const history = useHistory();
 
+  // Image upload
+  const [image, setImage] = useState(null);
+
   /* function fetchUser() {
         fetch("http://localhost/devenv_holiday_house/api/v1/user.php", {
             credentials: "include",
@@ -100,6 +103,28 @@ export default function Profile(props) {
       });
   }
 
+  // Upload image to backend
+  function uploadImage() {
+    let formData = new FormData();
+    formData.append("img", image);
+    fetch("http://localhost/devenv_holiday_house/api/v1/image.php", {
+      credentials: "include",
+      method: "POST",
+      headers: {
+        // Accept: "application/json"
+        // "Content-Type": "application/json"  -> DO NOT SET CONTENT TYPE WHEN FILES ARE INVOLVED!
+      },
+      body: formData
+    })
+      .then(res => {
+        console.log(res);
+        return res.text();
+      })
+      .then(data => {
+        console.log(data);
+      });
+  }
+
   useEffect(() => {
     fetch("http://localhost/devenv_holiday_house/api/v1/user.php", {
       credentials: "include",
@@ -171,6 +196,29 @@ export default function Profile(props) {
             </div>
             <div className="container">
               <h2>Properties</h2>
+              <h4>Upload image</h4>
+              <form
+                encType="multipart/form-data"
+                style={{ border: "1px solid black", margin: "10px" }}
+              >
+                <img
+                  src="assets/images/property-placeholder.jpg"
+                  alt=""
+                  className="placeholder"
+                />
+                <div className="form-content">
+                  <p className="top">Upload an image of the property</p>
+                  <input
+                    type="file"
+                    name="img"
+                    className="img-file"
+                    onChange={e => setImage(e.target.files[0])}
+                  />
+                  <button type="button" onClick={uploadImage}>
+                    Upload
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         </>
