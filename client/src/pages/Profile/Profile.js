@@ -25,7 +25,30 @@ export default function Profile(props) {
   // Image upload
   const [image, setImage] = useState(null);
 
-  
+  function getUserProperties() {
+    fetch("http://localhost/devenv_holiday_house/api/v1/house.php?user=1", {
+      credentials: "include",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      }
+    })
+    .then(res => {
+      if (!res.ok) {
+         history.push("/");
+         return false;
+      } else {
+        return res.json();
+      }
+    })
+    .then(data => {
+      if (data) {
+        console.log(data.data)
+        setProperties(data.data)
+      }
+    });
+  }
+
 
   function updateUser() {
     fetch("http://localhost/devenv_holiday_house/api/v1/user.php", {
