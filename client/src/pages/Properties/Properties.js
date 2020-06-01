@@ -3,7 +3,7 @@ import "./Properties.css";
 import PropertyItem from "../../components/PropertyItem/PropertyItem";
 import { SyncLoader } from "react-spinners";
 
-export default function Properties() {
+export default function Properties(history) {
   const [properties, setProperties] = useState([]);
   const [property, setProperty] = useState("");
   const [isLoading, setIsLoading] = useState(true);
@@ -41,6 +41,35 @@ export default function Properties() {
       });
   }, []);
 
+  // SEARCH
+  useEffect(() => {
+    if (history.location.state !== null) {
+      const passedSearchTerm = history.location.state.passedSearchTerm;
+
+      if (passedSearchTerm.length > 3) {
+        fetch(`http://localhost/devenv_holiday_house/api/v1/house.php?search=${passedSearchTerm}`, {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+          }
+        })
+          .then(res => res.json())
+          .then(data => {
+            setProperties(data.data);
+            setIsLoading(false);
+          });
+      }
+    }
+  }, []);
+
+
+  // SEARCH
+  if (history.location.state !== null) {
+    const passedSearchTerm = history.location.state.passedSearchTerm;
+    if (passedSearchTerm.length > 3) {
+      console.log(passedSearchTerm);
+    }
+  }
   return (
     <div className="Properties">
       {!isLoading ? (
@@ -75,14 +104,14 @@ export default function Properties() {
           </div>
         </>
       ) : (
-        <div className="loading">
-          <SyncLoader
-            className="loader"
-            loading={isLoading}
-            color={"#b07acd"}
-          />
-        </div>
-      )}
+          <div className="loading">
+            <SyncLoader
+              className="loader"
+              loading={isLoading}
+              color={"#b07acd"}
+            />
+          </div>
+        )}
     </div>
   );
 }
