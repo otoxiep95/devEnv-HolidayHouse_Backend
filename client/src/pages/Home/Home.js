@@ -1,28 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import "./Home.css";
+import { useHistory } from 'react-router-dom';
 
 export default function Home() {
-   /*  state = {
-        zipcode: undefined,
-    }
+    let history = useHistory();
+    const [searchTerm, setSearchTerm] = useState("");
 
-    handleInputChange = (event) => {
-        this.setState({ zipcode: event.target.value });
-    }
+    function onFormSubmit() {
+        //const { searchTerm } = this.state;
+        //this.props.handleZipcodeChange(searchTerm);
+        history.push('/properties', { passedSearchTerm: searchTerm })
+    };
 
-    onFormSubmit = () => {
-        const { zipcode } = this.state;
-        //this.props.handleZipcodeChange(zipcode);
-        this.props.history.push('/properties', { passedzipcode: zipcode });
-    }
- */
     return (
         <div className="Home">
             <div>
-                <input id="zipcode" placeholder="Zipcode" /* onChange={this.handleInputChange} */ />
-                <button /* onClick={this.onFormSubmit} */>Submit</button>
+                <input id="zipcode" placeholder="Zipcode" onChange={e => setSearchTerm(e.target.value)} />
+                <button onClick={onFormSubmit}>Submit</button>
             </div>
         </div>
     )
-    
+
 }
