@@ -8,6 +8,7 @@ export default function Properties(history) {
   const [property, setProperty] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [modal, setModal] = useState(false);
+  const [header, setHeader] = useState("Properties");
 
   async function fetchProperty(id) {
     setModal(true);
@@ -28,48 +29,45 @@ export default function Properties(history) {
   }
 
   useEffect(() => {
-    fetch("http://localhost/devenv_holiday_house/api/v1/house.php", {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      }
-    })
-      .then(res => res.json())
-      .then(data => {
-        setProperties(data.data);
-        setIsLoading(false);
-      });
-  }, []);
-
-  // SEARCH
-  useEffect(() => {
-    if (history.location.state !== null) {
+    // SEARCH FETCH
+    if (history.location.state && history.location.state.passedSearchTerm.length > 2) {
       const passedSearchTerm = history.location.state.passedSearchTerm;
+      fetch(`http://localhost/devenv_holiday_house/api/v1/house.php?search=${passedSearchTerm}`, {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        }
+      })
+        .then(res => res.json())
+        .then(data => {
+          setProperties(data.data);
+          setIsLoading(false);
 
-      if (passedSearchTerm.length > 3) {
-        fetch(`http://localhost/devenv_holiday_house/api/v1/house.php?search=${passedSearchTerm}`, {
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json"
+          //console.log(data.data);
+          if (data.data.length == 0) {
+            console.log(data);
+            setHeader("No properties found");
+            //document.querySelector('#property-header').innerHTML = "No properties found";
           }
-        })
-          .then(res => res.json())
-          .then(data => {
-            setProperties(data.data);
-            setIsLoading(false);
-          });
-      }
+        });
+    }
+
+    else {
+      // NORMAL FETCH
+      fetch("http://localhost/devenv_holiday_house/api/v1/house.php", {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        }
+      })
+        .then(res => res.json())
+        .then(data => {
+          setProperties(data.data);
+          setIsLoading(false);
+        });
     }
   }, []);
 
-
-  // SEARCH
-  if (history.location.state !== null) {
-    const passedSearchTerm = history.location.state.passedSearchTerm;
-    if (passedSearchTerm.length > 3) {
-      console.log(passedSearchTerm);
-    }
-  }
   return (
     <div className="Properties">
       {!isLoading ? (
@@ -92,6 +90,7 @@ export default function Properties(history) {
               </div>
             </div>
           )}
+          <h1>{header}</h1>
           <div className="property-list">
             {properties &&
               properties.map(property => (

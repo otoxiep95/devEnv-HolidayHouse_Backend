@@ -15,7 +15,7 @@ export default function Home() {
     return (
         <div className="Home">
             <div>
-                <input id="zipcode" placeholder="Zipcode" onChange={e => setSearchTerm(e.target.value)} />
+                <input placeholder="Search" onChange={e => setSearchTerm(e.target.value)} />
                 <button onClick={onFormSubmit}>Submit</button>
             </div>
         </div>
