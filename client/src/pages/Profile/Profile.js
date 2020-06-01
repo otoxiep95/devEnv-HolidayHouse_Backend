@@ -110,6 +110,29 @@ export default function Profile(props) {
       });
   }
 
+  function deleteProperty(house_id) {
+    console.log("hi")
+    fetch("http://localhost/devenv_holiday_house/api/v1/house.php", {
+      method: "DELETE",
+      credentials: "include",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        house_id: house_id
+      })
+    })
+    .then(res => {
+      if(res.ok) {
+        const index = properties.findIndex(property => property.house_id === house_id);
+        const newProperties = [...properties];
+        newProperties.splice(index, 1);
+        setProperties(newProperties);
+      }
+    })  
+  }
+
   // Upload image to backend
 /*   function uploadImage() {
     let formData = new FormData();
