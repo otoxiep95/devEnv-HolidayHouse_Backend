@@ -80,7 +80,13 @@ export default function Properties(history) {
             <div className="modal-container" onClick={() => setModal(false)}>
               <div className="modal">
                 <span onClick={() => setModal(false)}>X</span>
-                <div className="img"></div>
+                <div
+                  className="img"
+                  style={{
+                    background: `url(/user_uploads/img/normal/${property.image}) no-repeat center center`,
+                    backgroundSize: "cover"
+                  }}
+                ></div>
                 <div>
                   <h2>{property.title}</h2>
                   <p>{property.description}</p>

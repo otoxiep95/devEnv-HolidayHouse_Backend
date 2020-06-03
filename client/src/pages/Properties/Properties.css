@@ -1,109 +1,109 @@
 .Properties {
-    width: 100%;
-    height: 100%;
-    background-image:url("../../images/bg5.svg");
-    background-repeat: no-repeat;
-    background-size: cover;
+  width: 100%;
+  height: 100%;
+  background-image: url("../../images/bg5.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .property-list {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    column-gap: 10px;
-    row-gap: 10px;
-    padding: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  column-gap: 10px;
+  row-gap: 10px;
+  padding: 10px;
 }
 
 .property {
-    padding: 10px;
-    box-shadow: 0px 0px 4px 1px rgba(0,0,0,0.2);
-    border-bottom: 2px solid slateblue;
-    background: white;
-    border-radius: 4px;
-    cursor: pointer;
+  padding: 10px;
+  box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.2);
+  border-bottom: 2px solid slateblue;
+  background: white;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 .property .img {
-    background-color: lightblue;
-    width: 100%;
-    height: 150px;
-    object-fit: cover;
-    border-radius: 4px;
+  background-color: lightblue;
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 4px;
 }
 
 .propertyGeneral {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr;
-    align-items: end;
-    padding-top: 5px;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  align-items: end;
+  padding-top: 5px;
 }
 
 .propertyGeneral h3 {
-    font-size: 1.5em;
-    color: slateblue;
+  font-size: 1.5em;
+  color: slateblue;
 }
 
 .propertyGeneral p {
-    display: grid;
-    align-content: center;
+  display: grid;
+  align-content: center;
 }
 
-.propertyGeneral p:nth-child(n+2) {
-    color: gray;
-    font-size: .8em;
-    justify-content: center;
-    padding: 0px 2px;
+.propertyGeneral p:nth-child(n + 2) {
+  color: gray;
+  font-size: 0.8em;
+  justify-content: center;
+  padding: 0px 2px;
 }
 
 .propertyGeneral p:nth-child(3) {
-    border-right: 1px solid slateblue;
-    border-left: 1px solid slateblue;
+  border-right: 1px solid slateblue;
+  border-left: 1px solid slateblue;
 }
 
 .propertyAddress {
-    padding-top: 15px;
+  padding-top: 15px;
 }
 
-
 .modal-container {
-    width: 100%;
-    height: calc(100% - 65px);
-    background: rgba(255,255,255,.8);
-    position: absolute;
-    display: grid;
-    justify-content: center;
-    justify-items: center;
-    align-items: center;
+  width: 100%;
+  height: calc(100% - 65px);
+  background: rgba(255, 255, 255, 0.8);
+  position: absolute;
+  display: grid;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
 }
 
 .modal {
-    width: 70%;
-    padding: 10px;
-    box-shadow: 0px 0px 4px 1px rgba(0,0,0,0.2);
-    background: white;
-    border-radius: 20px;
-    position: relative;
+  width: 95%;
+  padding: 10px;
+  box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.2);
+  background: white;
+  border-radius: 20px;
+  position: relative;
 
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    column-gap: 15px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 15px;
 }
 
 .modal span {
-    position: absolute;
-    right: 0;
-    padding-right: 10px;
-    padding-top: 10px;
+  position: absolute;
+  right: 0;
+  padding-right: 10px;
+  padding-top: 10px;
 }
 
 .modal h2 {
-    color: slateblue;
-    margin-bottom: 5px;
+  color: slateblue;
+  margin-bottom: 5px;
 }
 
 .modal .img {
-    background-color: lightblue;
-    width: 100%;
-    object-fit: cover;
-    border-radius: 4px;
+  background-color: lightblue;
+  width: 600px;
+  height: 400px;
+  object-fit: cover;
+  border-radius: 4px;
 }
