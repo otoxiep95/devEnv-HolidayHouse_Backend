@@ -43,7 +43,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $conn = Database::connect();
             $stmt = $conn->prepare("SELECT * FROM house
             WHERE
-                user_id = :idVal;");
+                user_id = :idVal
+                ORDER BY house_id DESC");
             $query = $stmt->execute([
                 'idVal' => $user_id
             ]);
@@ -66,6 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             OR street LIKE :searchVal2
             OR country LIKE :searchVal3
             OR city LIKE :searchVal4
+            ORDER BY house_id DESC
             ");
         $query = $stmt->execute([
             'searchVal1' => $searchTerm,
@@ -88,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     }
     $start = $page * $per_page;
     $conn = Database::connect();
-    $stmt = $conn->prepare("SELECT * FROM house LIMIT :startVal,:per_pageVal");
+    $stmt = $conn->prepare("SELECT * FROM house ORDER BY house_id DESC LIMIT :startVal,:per_pageVal ");
     $query = $stmt->execute([
         'startVal' => $start,
         'per_pageVal' => $per_page
@@ -124,120 +126,122 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
  *      }
  */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (!Auth::is_authenticated()) {
-        return ApiResponse::error([], "Unauthenticated", 401);
-    }
-
-    $post = json_decode($_POST['json'], true);
-
-    // POST API schema, these fields are required
-    $api = [
-        'title' => 'Title',
-        'description' => 'Description',
-        'bedroom' => 'Bedroom',
-        'bathroom' => 'Bathroom',
-        'size' => 'Size',
-        'street' => 'Street',
-        'city' => 'City',
-        'country' => 'Country',
-        'postal' => 'Postal',
-        'price_per_night' => 'Price per night',
-    ];
-    //Check existence and sanitize values
-    foreach ($api as $key => $desc) {
-        if (!@val_exists($post[$key])) {
-            return ApiResponse::error([], "{$desc} value is missing", 500);
+    if ($_POST['method'] === "POST") {
+        if (!Auth::is_authenticated()) {
+            return ApiResponse::error([], "Unauthenticated", 401);
         }
-        $api[$key] = sanitize($post[$key]); //sanitize values and store them inside the API
-    }
 
-    //Handle and upload the image
-    $imageId =  imageUploadHandler();
+        $post = json_decode($_POST['json'], true);
+        var_dump($post);
+        // POST API schema, these fields are required
+        $api = [
+            'title' => 'Title',
+            'description' => 'Description',
+            'bedroom' => 'Bedroom',
+            'bathroom' => 'Bathroom',
+            'size' => 'Size',
+            'street' => 'Street',
+            'city' => 'City',
+            'country' => 'Country',
+            'postal' => 'Postal',
+            'price_per_night' => 'Price per night',
+        ];
+        //Check existence and sanitize values
+        foreach ($api as $key => $desc) {
+            if (!@val_exists($post[$key])) {
+                return ApiResponse::error([], "{$desc} value is missing", 500);
+            }
+            $api[$key] = sanitize($post[$key]); //sanitize values and store them inside the API
+        }
 
-    // Insert new house
-    $conn = Database::connect();
-    $stmt = $conn->prepare("INSERT INTO house (title, description, bedroom, bathroom, size, street, city, country, postal, price_per_night, image, user_id)
+        //Handle and upload the image
+        $imageId =  imageUploadHandler();
+
+        // Insert new house
+        $conn = Database::connect();
+        $stmt = $conn->prepare("INSERT INTO house (title, description, bedroom, bathroom, size, street, city, country, postal, price_per_night, image, user_id)
     VALUES (:titleVal, :descriptionVal, :bedroomVal, :bathroomVal, :sizeVal, :streetVal, :cityVal, :countryVal, :postalVal, :price_per_nightVal, :imageVal, :user_idVal)
     ");
-    $query = $stmt->execute([
-        'titleVal' => $api['title'],
-        'descriptionVal' => $api['description'],
-        'bedroomVal' => $api['bedroom'],
-        'bathroomVal' => $api['bathroom'],
-        'sizeVal' => $api['size'],
-        'streetVal' => $api['street'],
-        'cityVal' => $api['city'],
-        'countryVal' => $api['country'],
-        'postalVal' => $api['postal'],
-        'price_per_nightVal' => $api['price_per_night'],
-        'imageVal' => $imageId,
-        'user_idVal' => Auth::getUserId()
-    ]);
-    if ($query) {
-        $insertid = $conn->lastInsertId();
-        $api['house_id'] = $insertid;
-        $api['user_id'] = Auth::getUserId();
-        return ApiResponse::success($api);
-    }
-
-    return ApiResponse::error([], "Failed to create house");
-}
-
-/**
- * Update a single house
- */
-if ($_SERVER['REQUEST_METHOD'] === 'PATCH') {
-
-
-    if (!Auth::is_authenticated()) {
-        return ApiResponse::error([], "Unauthenticated", 401);
-    }
-    $patch = json_decode(file_get_contents('php://input'), true);
-
-    $userId = Auth::getUserId();
-
-    // PATCH API schema, these fields are required
-    $api = [
-        'title' => 'Title',
-        'description' => 'Description',
-        'bedroom' => 'Bedroom',
-        'bathroom' => 'Bathroom',
-        'size' => 'Size',
-        'street' => 'Street',
-        'city' => 'City',
-        'country' => 'Country',
-        'postal' => 'Postal',
-        'price_per_night' => 'Price per night',
-        'image' => 'Image',
-        'house_id' => 'Id house'
-    ];
-
-    //Check existence and sanitize values
-    foreach ($api as $key => $desc) {
-        if (!@val_exists($patch[$key])) {
-            return ApiResponse::error([], "{$desc} value is missing", 500);
-        }
-        $api[$key] = sanitize($patch[$key]); //sanitize values and store them inside the API
-    }
-
-    // Check if user is allowed to update house
-    $conn = Database::connect();
-    $stmt = $conn->prepare("SELECT * FROM house WHERE house_id = :house_idVal");
-    $query = $stmt->execute([
-        'house_idVal' => $patch['house_id']
-    ]);
-
-
-    //Handle and upload the image
-    // $imageId =  imageUploadHandler();
-
-    if ($query && $stmt->rowCount()) {
-        $data = $stmt->fetch();
-        if ($data['user_id'] != $userId) {
-            return ApiResponse::error([], "Forbidden to update this house", 403);
+        $query = $stmt->execute([
+            'titleVal' => $api['title'],
+            'descriptionVal' => $api['description'],
+            'bedroomVal' => $api['bedroom'],
+            'bathroomVal' => $api['bathroom'],
+            'sizeVal' => $api['size'],
+            'streetVal' => $api['street'],
+            'cityVal' => $api['city'],
+            'countryVal' => $api['country'],
+            'postalVal' => $api['postal'],
+            'price_per_nightVal' => $api['price_per_night'],
+            'imageVal' => $imageId,
+            'user_idVal' => Auth::getUserId()
+        ]);
+        if ($query) {
+            $insertid = $conn->lastInsertId();
+            $api['house_id'] = $insertid;
+            $api['user_id'] = Auth::getUserId();
+            return ApiResponse::success($api);
         }
 
-        $stmt = $conn->prepare("UPDATE house
+        return ApiResponse::error([], "Failed to create house");
+    }
+
+    /**
+     * Update a single house
+     */
+    if ($_POST['method'] === 'PATCH') {
+
+        var_dump($_SERVER['REQUEST_METHOD']);
+        if (!Auth::is_authenticated()) {
+            return ApiResponse::error([], "Unauthenticated", 401);
+        }
+        $patch = json_decode($_POST['json'], true);
+
+        $userId = Auth::getUserId();
+
+        // PATCH API schema, these fields are required
+        $api = [
+            'title' => 'Title',
+            'description' => 'Description',
+            'bedroom' => 'Bedroom',
+            'bathroom' => 'Bathroom',
+            'size' => 'Size',
+            'street' => 'Street',
+            'city' => 'City',
+            'country' => 'Country',
+            'postal' => 'Postal',
+            'price_per_night' => 'Price per night',
+            'house_id' => 'Id house'
+        ];
+
+        //Check existence and sanitize values
+        foreach ($api as $key => $desc) {
+            if (!@val_exists($patch[$key])) {
+                return ApiResponse::error([], "{$desc} value is missing", 500);
+            }
+            $api[$key] = sanitize($patch[$key]); //sanitize values and store them inside the API
+        }
+
+        // Check if user is allowed to update house
+        $conn = Database::connect();
+        $stmt = $conn->prepare("SELECT * FROM house WHERE house_id = :house_idVal");
+        $query = $stmt->execute([
+            'house_idVal' => $patch['house_id']
+        ]);
+
+        //Handle and upload the image
+        $imageId =  imageUploadHandler();
+
+        //Handle and upload the image
+        // $imageId =  imageUploadHandler();
+
+        if ($query && $stmt->rowCount()) {
+            $data = $stmt->fetch();
+            if ($data['user_id'] != $userId) {
+                return ApiResponse::error([], "Forbidden to update this house", 403);
+            }
+
+            $stmt = $conn->prepare("UPDATE house
         SET 
             title = :titleVal,
             description =:descriptionVal,
@@ -255,26 +259,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'PATCH') {
         ");
 
 
-        $query = $stmt->execute([
-            'titleVal' => $api['title'],
-            'descriptionVal' => $api['description'],
-            'bedroomVal' => $api['bedroom'],
-            'bathroomVal' => $api['bathroom'],
-            'sizeVal' => $api['size'],
-            'streetVal' => $api['street'],
-            'cityVal' => $api['city'],
-            'countryVal' => $api['country'],
-            'postalVal' => $api['postal'],
-            'price_per_nightVal' => $api['price_per_night'],
-            'imageVal' => $api['image'],
-            'house_idVal' => "233"
-        ]);
-        if ($query) {
-            return ApiResponse::success($api, "House updated");
+            $query = $stmt->execute([
+                'titleVal' => $api['title'],
+                'descriptionVal' => $api['description'],
+                'bedroomVal' => $api['bedroom'],
+                'bathroomVal' => $api['bathroom'],
+                'sizeVal' => $api['size'],
+                'streetVal' => $api['street'],
+                'cityVal' => $api['city'],
+                'countryVal' => $api['country'],
+                'postalVal' => $api['postal'],
+                'price_per_nightVal' => $api['price_per_night'],
+                'imageVal' => $imageId,
+                'house_idVal' => $api['house_id']
+            ]);
+            if ($query) {
+                return ApiResponse::success($api, "House updated");
+            }
         }
-    }
 
-    return ApiResponse::error([], "Deleting house failed");
+        return ApiResponse::error([], "Deleting house failed");
+    }
 }
 
 
@@ -416,9 +421,9 @@ function compressAndResize($imageId, $quality)
 
     // $info[0] returns image width
     // $info[2] returns image height
-    $aspectRatio = 150 / $info[0];
+    $aspectRatio = 300 / $info[0];
     //resize to width 700 and keep aspect ratio
-    $image = imagescale($image, 150, $aspectRatio * $info[1]);
+    $image = imagescale($image, 300, $aspectRatio * $info[1]);
 
     imagejpeg($image, $sImagePath . "/thumbnail/" . $imageId, $quality);
 

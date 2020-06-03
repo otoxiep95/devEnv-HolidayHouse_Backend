@@ -30,29 +30,33 @@ export default function Properties(history) {
 
   useEffect(() => {
     // SEARCH FETCH
-    if (history.location.state && history.location.state.passedSearchTerm.length > 2) {
+    if (
+      history.location.state &&
+      history.location.state.passedSearchTerm.length > 2
+    ) {
       const passedSearchTerm = history.location.state.passedSearchTerm;
-      fetch(`http://localhost/devenv_holiday_house/api/v1/house.php?search=${passedSearchTerm}`, {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json"
+      fetch(
+        `http://localhost/devenv_holiday_house/api/v1/house.php?search=${passedSearchTerm}`,
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+          }
         }
-      })
+      )
         .then(res => res.json())
         .then(data => {
           setProperties(data.data);
           setIsLoading(false);
 
           //console.log(data.data);
-          if (data.data.length == 0) {
+          if (data.data.length === 0) {
             console.log(data);
             setHeader("No properties found");
             //document.querySelector('#property-header').innerHTML = "No properties found";
           }
         });
-    }
-
-    else {
+    } else {
       // NORMAL FETCH
       fetch("http://localhost/devenv_holiday_house/api/v1/house.php", {
         headers: {
@@ -103,14 +107,14 @@ export default function Properties(history) {
           </div>
         </>
       ) : (
-          <div className="loading">
-            <SyncLoader
-              className="loader"
-              loading={isLoading}
-              color={"#b07acd"}
-            />
-          </div>
-        )}
+        <div className="loading">
+          <SyncLoader
+            className="loader"
+            loading={isLoading}
+            color={"#b07acd"}
+          />
+        </div>
+      )}
     </div>
   );
 }

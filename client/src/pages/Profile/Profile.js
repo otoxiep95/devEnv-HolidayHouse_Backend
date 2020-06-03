@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useHistory, Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { SyncLoader } from "react-spinners";
 import "./Profile.css";
 import PropertyItemProfile from "../../components/PropertyItemProfile/PropertyItemProfile";
@@ -26,6 +26,7 @@ export default function Profile(props) {
   const [image, setImage] = useState(null);
 
   function getUserProperties() {
+    console.log(image);
     fetch("http://localhost/devenv_holiday_house/api/v1/house.php?user=1", {
       credentials: "include",
       headers: {
@@ -33,22 +34,21 @@ export default function Profile(props) {
         "Content-Type": "application/json"
       }
     })
-    .then(res => {
-      if (!res.ok) {
-         history.push("/");
-         return false;
-      } else {
-        return res.json();
-      }
-    })
-    .then(data => {
-      if (data) {
-        console.log(data.data)
-        setProperties(data.data)
-      }
-    });
+      .then(res => {
+        if (!res.ok) {
+          history.push("/");
+          return false;
+        } else {
+          return res.json();
+        }
+      })
+      .then(data => {
+        if (data) {
+          console.log(data.data);
+          setProperties(data.data);
+        }
+      });
   }
-
 
   function updateUser() {
     fetch("http://localhost/devenv_holiday_house/api/v1/user.php", {
@@ -98,7 +98,7 @@ export default function Profile(props) {
           return history.push("/");
         }
         if (res.ok) {
-          setIsAuth(false); 
+          setIsAuth(false);
           return history.push("/");
         }
       })
@@ -111,7 +111,7 @@ export default function Profile(props) {
   }
 
   function deleteProperty(house_id) {
-    console.log("hi")
+    console.log("hi");
     fetch("http://localhost/devenv_holiday_house/api/v1/house.php", {
       method: "DELETE",
       credentials: "include",
@@ -122,19 +122,20 @@ export default function Profile(props) {
       body: JSON.stringify({
         house_id: house_id
       })
-    })
-    .then(res => {
-      if(res.ok) {
-        const index = properties.findIndex(property => property.house_id === house_id);
+    }).then(res => {
+      if (res.ok) {
+        const index = properties.findIndex(
+          property => property.house_id === house_id
+        );
         const newProperties = [...properties];
         newProperties.splice(index, 1);
         setProperties(newProperties);
       }
-    })  
+    });
   }
 
   // Upload image to backend
-/*   function uploadImage() {
+  /*   function uploadImage() {
     let formData = new FormData();
     formData.append("img", image);
     fetch("http://localhost/devenv_holiday_house/api/v1/image.php", {
@@ -165,24 +166,24 @@ export default function Profile(props) {
     })
       .then(res => {
         if (!res.ok) {
-           history.push("/");
-           return false;
+          history.push("/");
+          return false;
         } else {
           return res.json();
         }
       })
       .then(data => {
         if (data) {
-          data = data.data
-          setFirstName(data.first_name)
-          setLastName(data.last_name)
-          setEmail(data.email)
-          setPhone(data.phone)
+          data = data.data;
+          setFirstName(data.first_name);
+          setLastName(data.last_name);
+          setEmail(data.email);
+          setPhone(data.phone);
           setIsLoading(false);
         }
       });
 
-      getUserProperties();
+    getUserProperties();
   }, [history]);
 
   return (
@@ -235,36 +236,14 @@ export default function Profile(props) {
             </div>
             <div className="container">
               <h2>Properties</h2>
-              {/* <h4>Upload image</h4>
-              <form
-                encType="multipart/form-data"
-                style={{ border: "1px solid black", margin: "10px" }}
-              >
-                <img
-                  src="assets/images/property-placeholder.jpg"
-                  alt=""
-                  className="placeholder"
-                />
-                <div className="form-content">
-                  <p className="top">Upload an image of the property</p>
-                  <input
-                    type="file"
-                    name="img"
-                    className="img-file"
-                    onChange={e => setImage(e.target.files[0])}
+              {properties &&
+                properties.map(property => (
+                  <PropertyItemProfile
+                    key={property.house_id}
+                    property={property}
+                    deleteProperty={deleteProperty}
                   />
-                  <button type="button" onClick={uploadImage}>
-                    Upload
-                  </button>
-                </div>
-              </form> */}
-              {properties && properties.map(property => 
-                <PropertyItemProfile
-                  key={property.house_id}
-                  property={property}
-                  deleteProperty={deleteProperty}
-                />
-              )}
+                ))}
               {!properties.length && <p>You have no properties yet</p>}
             </div>
           </div>

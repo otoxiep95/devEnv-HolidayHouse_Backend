@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useHistory } from 'react-router-dom';
+import { useHistory } from "react-router-dom";
 
 export default function PropertyForm() {
   const [title, setTitle] = useState("");
@@ -12,42 +12,46 @@ export default function PropertyForm() {
   const [country, setCountry] = useState("");
   const [postal, setPostal] = useState(0);
   const [pricePrNight, setpricePrNight] = useState(0);
-  const [image, setImage] = useState("asdasd.jpg");
+  const [image, setImage] = useState(null);
   const [error, setError] = useState(null);
-
 
   const history = useHistory();
 
-
   function handleCreateProperty() {
-    fetch("http://localhost/devenv_holiday_house/api/v1/house.php?", {
+    const json = JSON.stringify({
+      title: title,
+      description: description,
+      bedroom: bedroom,
+      bathroom: bathroom,
+      size: size,
+      street: street,
+      city: city,
+      country: country,
+      postal: postal,
+      price_per_night: pricePrNight,
+      image: image
+    });
+    let formData = new FormData();
+    formData.append("img", image);
+    formData.append("json", json);
+    formData.append("method", "POST");
+    fetch("http://localhost/devenv_holiday_house/api/v1/house.php", {
       method: "POST",
       credentials: "include",
       headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
+        Accept: "application/json"
       },
-      body: JSON.stringify({
-        title: title,
-        description: description,
-        bedroom: bedroom,
-        bathroom: bathroom,
-        size: size,
-        street: street,
-        city: city,
-        country: country,
-        postal: postal,
-        price_per_night: pricePrNight,
-        image: image
-      })
+      body: formData
     })
       .then(res => {
+        console.log(res);
         if (res.ok) {
           history.push("/properties");
         } else {
           throw res;
         }
       })
+      .then(data => console.log(data))
       .catch(err => {
         err.json().then(body => {
           setError(body.message);
@@ -57,7 +61,11 @@ export default function PropertyForm() {
 
   return (
     <div className="PropertyForm">
-      <form className="inputPropertyForm" method="POST" /* enctype="multipart/form-data" */>
+      <form
+        className="inputPropertyForm"
+        method="POST"
+        encType="multipart/form-data"
+      >
         <input
           type="text"
           name="title"
@@ -118,11 +126,15 @@ export default function PropertyForm() {
           placeholder="Price pr. night"
           onChange={e => setpricePrNight(e.target.value)}
         />
-        <input
-          type="file"
-          name="image"
-          onChange={e => setImage(e.target.value)}
-        />
+        <div className="image-area">
+          <label>Upload image</label>
+          <input
+            type="file"
+            name="image"
+            onChange={e => setImage(e.target.files[0])}
+          />
+        </div>
+
         <div className="buttonWrapper">
           <button
             type="button"
