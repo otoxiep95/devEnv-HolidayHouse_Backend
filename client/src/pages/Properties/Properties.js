@@ -23,6 +23,7 @@ export default function Properties(history) {
     )
       .then(res => res.json())
       .then(data => {
+        console.log(data);
         setProperty(data.data);
         setIsLoading(false);
       });
@@ -96,6 +97,9 @@ export default function Properties(history) {
                   <p>{property.bathroom}</p>
                   <h3>Size</h3>
                   <p>{property.size} sqm</p>
+                  <h3>Contact details</h3>
+                  <a href={"mailto:" + property.email}>{property.email}</a>
+                  <a href={"tel:" + property.phone}>{property.phone}</a>
                 </div>
               </div>
             </div>
