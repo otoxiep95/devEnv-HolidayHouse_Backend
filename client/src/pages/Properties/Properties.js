@@ -91,15 +91,21 @@ export default function Properties(history) {
                 <div>
                   <h2>{property.title}</h2>
                   <p>{property.description}</p>
-                  <h3>Bedrooms</h3>
-                  <p>{property.bedroom}</p>
-                  <h3>Bathrooms</h3>
-                  <p>{property.bathroom}</p>
-                  <h3>Size</h3>
-                  <p>{property.size} sqm</p>
-                  <h3>Contact details</h3>
-                  <a href={"mailto:" + property.email}>{property.email}</a>
-                  <a href={"tel:" + property.phone}>{property.phone}</a>
+                  <div className="general">
+                    <h4>Bedrooms</h4>
+                    <p>{property.bedroom}</p>
+                    <h4>Bathrooms</h4>
+                    <p>{property.bathroom}</p>
+                    <h4>Size</h4>
+                    <p>{property.size} sqm</p>
+                  </div>
+                  <div className="contact">
+                    <h3>Contact details</h3>
+                    <h4>E-mail</h4>
+                    <a href={"mailto:" + property.email}>{property.email}</a>
+                    <h4>Phone number</h4>
+                    <a href={"tel:" + property.phone}>{property.phone}</a>
+                  </div>
                 </div>
               </div>
             </div>

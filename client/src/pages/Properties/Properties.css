@@ -108,3 +108,15 @@
   object-fit: cover;
   border-radius: 4px;
 }
+
+.contact {
+  margin-top: 10px;
+}
+
+.contact h3 {
+  color: slateblue;
+}
+
+.general {
+  margin-top: 10px;
+}
