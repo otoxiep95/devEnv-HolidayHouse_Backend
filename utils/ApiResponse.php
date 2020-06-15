@@ -1,7 +1,5 @@
 <?php
 
-
-
 class ApiResponse
 {
     private static $debug = true;

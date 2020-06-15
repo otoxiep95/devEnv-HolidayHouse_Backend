@@ -124,16 +124,34 @@ if ($httpMethod == 'DELETE') {
     $userId = Auth::getUserId();
     //$userId = 5; //testing purposes
 
+
     $conn = Database::connect();
-    $stmt = $conn->prepare("DELETE FROM user WHERE user_id = :userIdVal");
-    $stmtEx = $stmt->execute([
-        'userIdVal' => $userId
-    ]);
-    if ($stmtEx) {
+
+    try {
+        $conn->beginTransaction();
+        //first delete all houses that belong to user
+        $stmtHouses = $conn->prepare("DELETE FROM house WHERE user_id=:userIdVal");
+        $stmtHousesEx = $stmtHouses->execute([
+            'userIdVal' => $userId
+        ]);
+
+        if (!$stmtHousesEx) {
+            return ApiResponse::error([], "Could not delete houses", 500);
+        }
+
+        $stmt = $conn->prepare("DELETE FROM user WHERE user_id = :userIdVal");
+        $stmtEx = $stmt->execute([
+            'userIdVal' => $userId
+        ]);
+        if (!$stmtEx) {
+            return ApiResponse::error([], "something went wrong", 500);
+        }
+        $conn->commit();
         Auth::logout();
         return ApiResponse::success([], "User deleted", 200);
-    } else {
-        return ApiResponse::error([], "something went wrong", 500);
+    } catch (Exception $e) {
+        $conn->rollback();
+        return ApiResponse::error([$e], "something went wrong", 500);
     }
 };
 

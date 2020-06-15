@@ -125,6 +125,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
  *          "price_per_night": 299
  *      }
  */
+
+
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($_POST['method'] === "POST") {
         if (!Auth::is_authenticated()) {
@@ -132,7 +135,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         $post = json_decode($_POST['json'], true);
-        var_dump($post);
+        // var_dump($post);
         // POST API schema, these fields are required
         $api = [
             'title' => 'Title',
@@ -347,6 +350,7 @@ function imageUploadHandler()
     if (!$_FILES['img']) {
         ApiResponse::error([], "Image does not exist", 400);
     }
+
     //Sanitize image
     //Check if the file extension is jpg or png file
     $sImageExtension = pathinfo($_FILES['img']['name'], PATHINFO_EXTENSION);
@@ -408,7 +412,7 @@ function compressAndResize($imageId, $quality)
     // Resize image to normal size
 
     // $info[0] returns image width
-    // $info[2] returns image height
+    // $info[1] returns image height
     $aspectRatio = 700 / $info[0];
     if ($info[0] > 700) {
 
@@ -420,7 +424,7 @@ function compressAndResize($imageId, $quality)
     // Resize image to thumbnail size
 
     // $info[0] returns image width
-    // $info[2] returns image height
+    // $info[1] returns image height
     $aspectRatio = 300 / $info[0];
     //resize to width 700 and keep aspect ratio
     $image = imagescale($image, 300, $aspectRatio * $info[1]);
